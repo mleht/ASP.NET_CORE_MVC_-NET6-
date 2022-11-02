@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Movie>   // Actionmethodilta tulee IEnumerable<Movie> & nyt näkymä tietää sen
+
+@{
+}
+
+<h1>Movies</h1>
+
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Movie</th>
+                <th>My rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td width="50%">@item.Name</td>
+                    <td width="30%">@item.Rating</td>
+                </tr>
+            }
+        </tbody>
+    </table>
