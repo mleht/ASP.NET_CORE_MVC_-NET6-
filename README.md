@@ -1,6 +1,9 @@
 ASP.NET Core MVC (.NET 6)
 
-- SQL server connection EF Code first approach
+- .NET 6
+- Code first Entity Framework SQL server connection
+- Bootswatch
+- Bootstrap icons
 
 
 
