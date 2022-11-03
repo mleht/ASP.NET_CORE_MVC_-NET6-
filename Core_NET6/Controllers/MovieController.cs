@@ -52,5 +52,48 @@ namespace Core_NET6.Controllers
             }
             return View(obj);   
         }
+
+        // GET
+        public IActionResult Edit(int? id) 
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            // var movieFromDb = _db.Movies.Where(x => x.Id == id).FirstOrDefault();
+            var movieFromDb = _db.Movies.Find(id);
+
+            if (movieFromDb == null)
+            {
+                return NotFound();
+            }   
+            return View(movieFromDb);
+        }
+
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Movie obj) 
+        {
+            // custom validation test1
+            if (obj.Name == "Star Wars" && obj.Rating != 10)
+            {
+                ModelState.AddModelError("rating", "Did you forget to give a rating of 10?");
+            }
+
+            // custom validation test2
+            var movie = _db.Movies.Where(x => x.Name == obj.Name).FirstOrDefault();
+            if (movie != null) { ModelState.AddModelError("name", "This movie is already listed"); }
+
+            // normal validation
+            if (ModelState.IsValid)
+            {
+                _db.Movies.Update(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(obj);
+        }
     }
 }
