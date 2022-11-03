@@ -1,6 +1,8 @@
 ﻿using Core_NET6.Data;
 using Core_NET6.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Metrics;
+using System.Xml.Linq;
 
 namespace Core_NET6.Controllers
 {
@@ -31,7 +33,18 @@ namespace Core_NET6.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Movie obj)
         {
-            if(ModelState.IsValid) 
+            // custom validation test1
+            if (obj.Name == "Star Wars" && obj.Rating != 10)
+            {
+                ModelState.AddModelError("rating", "Did you forget to give a rating of 10?");
+            }
+
+            // custom validation test2
+            var movie = _db.Movies.Where(x => x.Name == obj.Name).FirstOrDefault();
+            if (movie != null) { ModelState.AddModelError("name", "This movie is already listed"); }
+
+            // normal validation
+            if (ModelState.IsValid) 
             { 
                 _db.Movies.Add(obj);
                 _db.SaveChanges();
