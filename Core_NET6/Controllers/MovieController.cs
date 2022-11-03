@@ -19,5 +19,21 @@ namespace Core_NET6.Controllers
             IEnumerable<Movie> moviesList = _db.Movies;   // vaihtoehtoinen tapa
             return View(moviesList);
         }
+        
+        // GET
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Movie obj)
+        {
+            _db.Movies.Add(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }
