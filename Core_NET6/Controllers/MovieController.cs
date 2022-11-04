@@ -95,5 +95,38 @@ namespace Core_NET6.Controllers
             }
             return View(obj);
         }
+
+        // GET
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            // var movieFromDb = _db.Movies.Where(x => x.Id == id).FirstOrDefault();
+            var movieFromDb = _db.Movies.Find(id);
+
+            if (movieFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(movieFromDb);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int? id)
+        {
+            var movie = _db.Movies.Find(id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            _db.Movies.Remove(movie);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }
