@@ -48,6 +48,7 @@ namespace Core_NET6.Controllers
             { 
                 _db.Movies.Add(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Movie added successfully";
                 return RedirectToAction("Index");
             }
             return View(obj);   
@@ -82,15 +83,12 @@ namespace Core_NET6.Controllers
                 ModelState.AddModelError("rating", "Did you forget to give a rating of 10?");
             }
 
-            // custom validation test2
-            var movie = _db.Movies.Where(x => x.Name == obj.Name).FirstOrDefault();
-            if (movie != null) { ModelState.AddModelError("name", "This movie is already listed"); }
-
             // normal validation
             if (ModelState.IsValid)
             {
                 _db.Movies.Update(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Movie updated successfully";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -126,6 +124,7 @@ namespace Core_NET6.Controllers
 
             _db.Movies.Remove(movie);
             _db.SaveChanges();
+            TempData["success"] = "Movie deleted successfully";
             return RedirectToAction("Index");
         }
     }
